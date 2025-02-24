@@ -6,7 +6,26 @@
     <title>My Pantry</title>
   </head>
   <body>
-    <a href="/">Home</a> <a href="/foods/new.ejs">Add New Item</a>
-    <h1>Welcome to my Pantry</h1>
+    <a href="/">Home</a> <a href="/users/<%= user._id %>/foods/new">Add New Item</a>
+    <h1>My Pantry</h1>
+    <% if (user.pantry > 0) { %>
+        <ul>  
+       <% user.pantry.forEach(item => { %>
+      <li>
+        <a href="/users/<%= user._id %>/foods/<%=item._id%>"><%= item.name %></a>
+        <p><%=item.type%></p>
+
+        <a href="/users/<%= user._id %>/foods/<%= item._id %>/edit"> Edit <%=item.name%></a>
+        <form action="/users/<%= user._id %>/foods/<%= item._id %>?_method=DELETE" method="POST">
+        <button type="submit"> Delete</button>
+        </form>
+        </li>
+    <% }); %>
+    </ul>
+   <% } else { %>
+      <p> This Pantry is empty...</p>
+      <a href="/users/<%= user._id %>/foods/new">Add New Item</a>
+    <% } %>
+  
   </body>
 </html>

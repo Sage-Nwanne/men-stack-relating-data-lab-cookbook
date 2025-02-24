@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Food Item</title>
+</head>
+<body>
+<%- include('partials/_navbar.ejs') %>
+<h1>Edit Food Item</h1>
+
+<form action="/users/<%= userId %>/foods/<%= food._id %>?_method=PUT" method="POST">
+    <label for="name">Food Name:</label>
+    <input type="text" name="name" id="name" value="<%= food.name %>" required>
+
+    <label for="type">Type:</label>
+    <select id="type" name="type">
+      <option
+        value="fruit"
+        <%= application.status === "fruit" ? "selected" : "" %>
+      >
+        Fruit
+      </option>
+      <option
+        value="vegetable"
+        <%= application.status === "vegetable" ? "selected" : "" %>
+      >
+        Vegetable
+      </option>
+      <option
+        value="meat"
+        <%= application.status === "meat" ? "selected" : "" %>
+      >
+        Meat
+      </option>
+      <option
+        value="carb"
+        <%= application.status === "carb" ? "selected" : "" %>
+      >
+        Carb
+      </option>
+      <option
+        value="other"
+        <%= application.status === "other" ? "selected" : "" %>
+      >
+        Other
+      </option>
+    </select>
+
+    <label for="description">Description</label>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<a href="/users/<%= userId %>/foods">⬅ Back to Pantry</a>
+</body>
+</html>

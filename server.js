@@ -7,6 +7,8 @@ const methodOverride = require('method-override');
 const morgan = require('morgan');
 const session = require('express-session');
 
+app.set('view engine', 'ejs')
+
 const authController = require('./controllers/auth.js');
 const foodsController = require('./controllers/foods.js')
 const isSignedIn = require('./middleware/is-signed-in.js');

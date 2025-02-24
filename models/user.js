@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const foodSchema = new mongoose.Schema({
   name :{type: String,  required: true,}, 
 
-  type : { type: String, required: true, },
+  type : { type: String, enum: ['fruit', 'vegetable', 'meat', 'carb', 'other'], required: true, },
 
   description: { type: String, maxlength: 150 }
 

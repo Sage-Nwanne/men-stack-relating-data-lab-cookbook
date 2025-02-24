@@ -6,52 +6,53 @@
     <title>Edit Food Item</title>
 </head>
 <body>
-<%- include('partials/_navbar.ejs') %>
+<%- include('../partials/_navbar.ejs') %>
 <h1>Edit Food Item</h1>
 
-<form action="/users/<%= userId %>/foods/<%= food._id %>?_method=PUT" method="POST">
+<form action="/users/<%= user._id %>/foods/<%= pantry._id %>?_method=PUT" method="POST">
     <label for="name">Food Name:</label>
-    <input type="text" name="name" id="name" value="<%= food.name %>" required>
+    <input type="text" name="name" id="name" value="<%= pantry.name %>" required>
 
     <label for="type">Type:</label>
     <select id="type" name="type">
       <option
         value="fruit"
-        <%= application.status === "fruit" ? "selected" : "" %>
+        <%= pantry.type === "fruit" ? "selected" : "" %>
       >
         Fruit
       </option>
       <option
         value="vegetable"
-        <%= application.status === "vegetable" ? "selected" : "" %>
+        <%= pantry.type === "vegetable" ? "selected" : "" %>
       >
         Vegetable
       </option>
       <option
         value="meat"
-        <%= application.status === "meat" ? "selected" : "" %>
+        <%= pantry.type === "meat" ? "selected" : "" %>
       >
         Meat
       </option>
       <option
         value="carb"
-        <%= application.status === "carb" ? "selected" : "" %>
+        <%= pantry.type === "carb" ? "selected" : "" %>
       >
         Carb
       </option>
       <option
         value="other"
-        <%= application.status === "other" ? "selected" : "" %>
+        <%= pantry.type === "other" ? "selected" : "" %>
       >
         Other
       </option>
     </select>
 
     <label for="description">Description</label>
+    <textarea name="description" id="description"></textarea>
 
     <button type="submit">Save Changes</button>
 </form>
 
-<a href="/users/<%= userId %>/foods">⬅ Back to Pantry</a>
+<a href="/users/<%= user._id %>/foods">⬅ Back to Pantry</a>
 </body>
 </html>

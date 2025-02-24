@@ -6,7 +6,8 @@ const User = require('../models/user.js');
 
 // INDEX: show all pantry items
 router.get('/', async (req, res) => {
-    res.render('foods/index.ejs' , {User, pantry: User.pantry});
+    const user = await User.findById(req.session.user._id)
+    res.render('foods/index.ejs' , {user:user , pantry:user.pantry});
   });
 
 
@@ -14,7 +15,7 @@ router.get('/', async (req, res) => {
 
 router.get('/new', async (req, res) => {
     try {
-        const user = await User.findById(req.params.userId)
+        const user = await User.findById(req.session.user._id)
         res.render('foods/new', {userId: req.params.userId});
 
     } catch(error) {
@@ -27,7 +28,7 @@ router.get('/new', async (req, res) => {
 
 router.post('/', async (req,res) => {
     try {
-        const currentUser = await User.findById(req.params.userId); //finding the user
+        const currentUser = await User.findById(req.session.user._id); //finding the user
         currentUser.pantry.push(req.body) //pushing req body into currentUser's pantry
         await currentUser.save() //saving the changes made to the user
 
@@ -39,26 +40,29 @@ router.post('/', async (req,res) => {
     }
 });
 
-// DELETE: remove food item
-router.delete('/:itemId', async (req,res) => {
+
+//SHOW: Display specific food item ======== works ============
+
+router.get('/:foodId', async (req,res) => {
     try {
-        const currentUser = await User.findById(req.params.userId);
-        currentUser.pantry.id(req.params.itemId).deleteOne();
-        await currentUser.save();
-        res.redirect(`/users/${user._id}/foods`);
+        const currentUser = await User.findById(req.session.user._id);
+        const food = currentUser.pantry.id(req.params.foodId);
+
+        res.render('foods/show.ejs', {pantry: food })
     } catch (error) {
         console.log(error)
-        res.redirect('/')
     }
-});
+})
+
+
 
 // EDIT: show edit form page
 
-router.get('/:itemId/edit', async (req,res) => {
+router.get('/:foodId/edit', async (req,res) => {
     try {
-        const currentUser = await User.findById(req.params.userId);
-        const food = currentUser.pantry.id(req.params.userId);
-        res.render('foods/edit', {userId: user._id, food})
+        const currentUser = await User.findById(req.session.user._id);
+        const food = currentUser.pantry.id(req.params.foodId);
+        res.render('foods/edit.ejs', { user: currentUser , pantry: food })
     } catch (error) {
         console.log(error)
         res.redirect('/')
@@ -66,48 +70,45 @@ router.get('/:itemId/edit', async (req,res) => {
     
 })
 
+
 //UPDATE: Modify Existing  Item
-router.put('/:itemId', async (req, res) => {
+router.put('/:foodId', async (req, res) => {
     try {
-        const user = await User.findById(req.params.userId);
-        const food = user.pantry.id(req.params.itemId);
+        const user = await User.findById(req.session.user._id);
+        const food = user.pantry.id(req.params.foodId);
         food.set(req.body);
         await user.save();
-        res.redirect(`/users/${user._id}/foods`);
+
+        res.redirect(`/users/${user._id}/foods/${req.params.foodId}`);
     } catch (error) {
         console.log(error);
         res.redirect('/');
     }
 });
 
-//SHOW: Display specific food item
 
-router.get(':itemId', async (req,res) => {
+
+
+// DELETE: remove food item
+router.delete('/:foodId', async (req,res) => {
     try {
-        const currentUser = await User.findById(req.params.userId);
-        const food = currentUser.pantry.id(req.params.itemId);
+        const currentUser = await User.findById(req.session.user._id);
+       
+        currentUser.pantry.id(req.params.foodId).deleteOne();  //'cannot read properties of null (deleteOne)302,304
+        await currentUser.save();
 
-        res.render('foods/show', {userId: user._id, food})
+
+        res.redirect(`/users/${currentUser._id}/foods`);
     } catch (error) {
         console.log(error)
-    }
-})
-
-
-
-
-router.get('/foods', async (req, res) => { // ✅ Refers to '/users/:userId/foods/'
-    try {
-        const user = await User.findById(req.params.userId);
-        if (!user) {
-            return res.status(404).send("User not found");
-        }
-        res.render('foods/index', { user, pantry: user.pantry });
-    } catch (error) {
-        console.log(error);
-        res.redirect('/');
+        res.redirect('/')
     }
 });
+
+
+
+
+
 
 
 // const food = currentUser.foods.id(req.params.foodId) //finding the specific food item

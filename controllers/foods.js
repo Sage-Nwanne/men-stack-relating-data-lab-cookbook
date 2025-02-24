@@ -56,7 +56,7 @@ router.get('/:foodId', async (req,res) => {
 
 
 
-// EDIT: show edit form page
+// EDIT: show edit form page ======== works ============
 
 router.get('/:foodId/edit', async (req,res) => {
     try {
@@ -71,7 +71,7 @@ router.get('/:foodId/edit', async (req,res) => {
 })
 
 
-//UPDATE: Modify Existing  Item
+//UPDATE: Modify Existing  Item ======== works ============
 router.put('/:foodId', async (req, res) => {
     try {
         const user = await User.findById(req.session.user._id);
@@ -89,12 +89,12 @@ router.put('/:foodId', async (req, res) => {
 
 
 
-// DELETE: remove food item
+// DELETE: remove food item ======== works ============
 router.delete('/:foodId', async (req,res) => {
     try {
         const currentUser = await User.findById(req.session.user._id);
        
-        currentUser.pantry.id(req.params.foodId).deleteOne();  //'cannot read properties of null (deleteOne)302,304
+        currentUser.pantry.id(req.params.foodId).deleteOne();  
         await currentUser.save();
 
 
@@ -105,12 +105,5 @@ router.delete('/:foodId', async (req,res) => {
     }
 });
 
-
-
-
-
-
-
-// const food = currentUser.foods.id(req.params.foodId) //finding the specific food item
 
 module.exports = router;

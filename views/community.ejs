@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <%- include('../partials/_navbar.ejs') %>
+    <%- include('partials/_navbar.ejs') %>
     <h1>Community Pantries</h1>
     <ul>
         <% users.forEach(user => { %>
@@ -15,10 +15,10 @@
                 <h3><%= user.username %>'s Pantry</h3>
                 <ul>
                     <% user.pantry.forEach(item => { %>
-                        <li><%= item.itemName %> - <%= item.quantity %> (Expires: <%= item.expiresAt ? item.expiresAt.toDateString() : 'N/A' %>)</li>
+                        <li><%= item.name %> </li>
                     <% }); %>
                 </ul>
-                <a href="/community/pantry/<%= user.username %>">View Full Pantry</a>
+                <a href="/community/pantry/<%= user._id %>">View Full Pantry</a>
             </li>
         <% }); %>
     </ul>

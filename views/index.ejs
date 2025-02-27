@@ -10,6 +10,7 @@
 
   <% if (user) { %>
     <h1>Welcome back to the CookBook, <%= user.username %>!</h1>
+    <a href="/users/<%=user._id%>/foods/new">Add a new recipe</a>
     <a href="/community">View Community Pantries</a>
 
     <p>inviting sentence... add a create recipe to this page</p>

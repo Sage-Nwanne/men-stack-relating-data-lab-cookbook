@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <%- include('../partials/_navbar.ejs') %>
-    <h1><%= user.username %>'s Pantry</h1>
-    <ul>
-        <% user.pantry.forEach(item => { %>
-            <li><%= item.itemName %> - <%= item.quantity %> (Expires: <%= item.expiresAt ? item.expiresAt.toDateString() : 'N/A' %>)</li>
-        <% }); %>
+    <%- include('partials/_navbar.ejs') %>
+    <% if (user.pantry.length > 0) { %>
+        <ul>  
+       <% user.pantry.forEach(item => { %>
+      <li>
+        <a href="/users/<%= user._id %>/foods/<%=item._id%>"><%= item.name %></a> <p>(<%=item.type%>)</p>
+        </li>
+        <br>
+    <% }); %>
     </ul>
+   <% } else { %>
+      <p> This Users pantry is empty...</p>
+    <% } %>
     <a href="/community">Back to Community</a>
 </body>
 </html>
